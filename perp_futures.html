@@ -323,6 +323,12 @@
                 font-size: 6em;
             }
         }
+
+        .funding-center-card {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -536,13 +542,13 @@
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-icon">🔢</div>
-                    <div class="feature-title">Leverage Tiers</div>
+                    <div class="feature-title">Leverage</div>
                     <div class="feature-description">
-                        <strong>Available Leverage:</strong><br>
-                        • Tier 1: Up to 20x (New traders)<br>
-                        • Tier 2: Up to 50x (Verified)<br>
-                        • Tier 3: Up to 100x (VIP)<br>
-                        • Custom: Up to 125x (Institutional)
+                        Choose your preferred leverage for each contract.<br>
+                        • Flexible leverage options (e.g., 1x, 5x, 10x, 20x, 50x, 100x)<br>
+                        • Each trading pair may support different maximum leverage<br>
+                        • Adjust leverage at any time to match your risk appetite
+                        Simple and transparent leverage management for all users.
                     </div>
                 </div>
                 
@@ -562,11 +568,9 @@
                     <div class="feature-icon">🔒</div>
                     <div class="feature-title">Position Limits</div>
                     <div class="feature-description">
-                        <strong>Show:</strong><br>
-                        • Maximum position size: $50,000<br>
-                        • Current exposure: $25,000<br>
-                        • Available capacity: $25,000<br>
-                        • Diversification suggestions
+                        • Shows the maximum position size allowed for each contract.<br>
+                        • Instantly know your available capacity for new trades.<br>
+                        • Helps you avoid exceeding platform or contract limits.
                     </div>
                 </div>
             </div>
@@ -608,40 +612,16 @@
         <div class="slide" data-slide="8">
             <h2>💰 Feature 4: Funding Events</h2>
             
-            <div class="feature-grid">
-                <div class="feature-card">
+            <div class="feature-grid" style="display: flex; justify-content: center;">
+                <div class="feature-card funding-center-card">
                     <div class="feature-icon">⏰</div>
                     <div class="feature-title">Funding Rate Mechanism</div>
-                    <div class="feature-description">
+                    <div class="feature-description" style="text-align: center;">
                         <strong>How It Works:</strong><br>
                         • Every 8 hours (3 times daily)<br>
                         • Based on price difference<br>
                         • Longs pay shorts or vice versa<br>
                         • Keeps price aligned with spot
-                    </div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <div class="feature-title">Rate Calculation</div>
-                    <div class="feature-description">
-                        <strong>Components:</strong><br>
-                        • Premium Index<br>
-                        • Interest Rate<br>
-                        • Clamp Rate<br>
-                        • Real-time updates
-                    </div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <div class="feature-title">Trading Strategy</div>
-                    <div class="feature-description">
-                        <strong>Opportunities:</strong><br>
-                        • Funding rate arbitrage<br>
-                        • Long/short bias based on rate<br>
-                        • Rate prediction tools<br>
-                        • Historical rate analysis
                     </div>
                 </div>
             </div>
@@ -693,8 +673,7 @@
                     <div class="feature-title">Margin Monitor</div>
                     <div class="feature-description">
                         <strong>Demo:</strong><br>
-                        "Your account health: 85%"<br>
-                        • Real-time margin usage<br>
+                        Your position health: 85%<br>
                         • Liquidation price alerts<br>
                         • Automatic warnings<br>
                         • Suggested actions
@@ -709,7 +688,6 @@
                         • Adjust leverage dynamically<br>
                         • Add more margin<br>
                         • Modify liquidation price<br>
-                        • Real-time position health
                     </div>
                 </div>
                 
