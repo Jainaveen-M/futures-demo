@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Perpetual Futures - Product Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            background: rgba(21, 21, 21, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 50px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 239, 116, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+            animation: fadeInUp 0.8s ease-out;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(45deg, #FFEF724B, #FF8A4B, #FF6B4B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slide h2 {
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            color: #FFEF724B;
+            text-align: center;
+            border-bottom: 3px solid #FFEF724B;
+            padding-bottom: 15px;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #FF8A4B;
+        }
+
+        .slide p {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(255, 239, 116, 0.15), rgba(255, 138, 75, 0.15));
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 2px solid rgba(255, 239, 116, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 239, 116, 0.3);
+            border-color: #FFEF724B;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .feature-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #FF8A4B;
+        }
+
+        .feature-description {
+            font-size: 1.1em;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .demo-flow {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            background: rgba(21, 21, 21, 0.8);
+            padding: 30px;
+            border-radius: 50%;
+            width: 180px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 3px solid rgba(255, 239, 116, 0.5);
+        }
+
+        .flow-step:hover {
+            transform: scale(1.1);
+            background: rgba(255, 239, 116, 0.2);
+        }
+
+        .flow-step::after {
+            content: '→';
+            position: absolute;
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 4em;
+            color: #FFEF724B;
+            animation: pulse 2s infinite;
+            z-index: 2;
+        }
+
+        .flow-step:last-child::after {
+            display: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .step-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #FF8A4B;
+            margin-bottom: 10px;
+        }
+
+        .step-title {
+            font-size: 1.2em;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .explanation-box {
+            background: rgba(21, 21, 21, 0.6);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 5px solid #FFEF724B;
+        }
+
+        .explanation-box h4 {
+            color: #FF8A4B;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: rgba(21, 21, 21, 0.6);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 239, 116, 0.2);
+        }
+
+        .comparison-table th {
+            background: rgba(255, 239, 116, 0.3);
+            font-weight: bold;
+            color: #FF8A4B;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255, 239, 116, 0.1);
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #FFEF724B, #FF8A4B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #FFEF724B, #FF8A4B);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 239, 116, 0.4);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(21, 21, 21, 0.8);
+            border: 1px solid rgba(255, 239, 116, 0.3);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #FF8A4B;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+                min-height: 70vh;
+            }
+            
+            .slide h1 {
+                font-size: 2.5em;
+            }
+            
+            .slide h2 {
+                font-size: 2em;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-flow {
+                flex-direction: column;
+            }
+            
+            .flow-step::after {
+                content: '↓';
+                right: auto;
+                left: 50%;
+                top: auto;
+                bottom: -60px;
+                transform: translateX(-50%);
+                font-size: 6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">13</span>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide" data-slide="1">
+            <h1>🚀 Crypto Perpetual Futures</h1>
+            <p style="font-size: 1.5em; margin: 30px 0;">Revolutionary Trading Platform</p>
+            <p style="font-size: 1.2em; opacity: 0.8;">Empowering traders with advanced tools and seamless experience</p>
+            <div style="text-align: center; margin-top: 50px;">
+                <div style="font-size: 1.1em; opacity: 0.7;">Product Demo for Team Review</div>
+            </div>
+        </div>
+
+        <!-- Slide 2: What Are Perpetual Futures? -->
+        <div class="slide" data-slide="2">
+            <h2>🤔 What Are Perpetual Futures?</h2>
+            <div class="explanation-box">
+                <h4>Simple Explanation:</h4>
+                <p style="font-size: 1.2em;">Think of it like betting on whether Bitcoin will go up or down, but with superpowers:</p>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-title">No Expiration</div>
+                    <div class="feature-description">Unlike traditional futures, these contracts never expire. You can hold positions as long as you want.</div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Leverage Power</div>
+                    <div class="feature-description">Control $10,000 worth of Bitcoin with just $100. Amplify your profits (and risks).</div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Go Long or Short</div>
+                    <div class="feature-description">Make money when crypto goes up (long) or down (short). Profit in any market condition.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Core Features to Demo -->
+        <div class="slide" data-slide="3">
+            <h2>⭐ Core Features to Demonstrate</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">1. Trading Interface</div>
+                    <div class="feature-description">
+                        • Real-time price charts<br>
+                        • Order placement panel<br>
+                        • Position management<br>
+                        • Market depth visualization
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <div class="feature-title">2. Risk Management</div>
+                    <div class="feature-description">
+                        • Stop-loss automation<br>
+                        • Margin monitoring<br>
+                        • Liquidation protection<br>
+                        • Position size calculator
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <div class="feature-title">3. Web Experience</div>
+                    <div class="feature-description">
+                        • Responsive design<br>
+                        • Cross-browser compatibility<br>
+                        • Real-time updates<br>
+                        • Advanced charting tools
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Demo Flow -->
+        <div class="slide" data-slide="4">
+            <h2>🎬 Demo Flow (15 minutes)</h2>
+            
+            <div class="demo-flow">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Market Overview</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Place Order</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Manage Position</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Risk Controls</div>
+                </div>
+            </div>
+            
+            <div class="explanation-box">
+                <h4>What We'll Show:</h4>
+                <p>A complete trading journey from login to profit/loss realization, highlighting our competitive advantages at each step.</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Feature 1 - Trading Interface -->
+        <div class="slide" data-slide="5">
+            <h2>📊 Feature 1: Trading Interface</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📉</div>
+                    <div class="feature-title">Live Price Charts</div>
+                    <div class="feature-description">
+                        <strong>Demo Script:</strong><br>
+                        "Watch Bitcoin's price move in real-time"<br>
+                        • Candlestick charts<br>
+                        • Technical indicators<br>
+                        • Multiple timeframes<br>
+                        • Drawing tools
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <div class="feature-title">Order Placement</div>
+                    <div class="feature-description">
+                        <strong>Show Live:</strong><br>
+                        • Buy Bitcoin at $43,000<br>
+                        • Use 10x leverage<br>
+                        • Set stop-loss at $42,000<br>
+                        • Instant order execution
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <div class="feature-title">Advanced Tools</div>
+                    <div class="feature-description">
+                        <strong>Highlight:</strong><br>
+                        • Order book depth<br>
+                        • Recent trades feed<br>
+                        • Position calculator<br>
+                        • Risk/reward analyzer
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💸</div>
+                    <div class="feature-title">Wallet Transfers</div>
+                    <div class="feature-description">
+                        <strong>Instant Transfers:</strong><br>
+                        • Spot to Futures<br>
+                        • Futures to Spot<br>
+                        • Real-time balance updates<br>
+                        • No transfer fees
+                    </div>
+                </div>
+            </div>
+            
+            <div class="explanation-box">
+                <h4>Non-Technical Explanation:</h4>
+                <p>This is like a video game interface for trading. Users can see prices moving, place bets, and manage their trades all in one screen. Plus, they can instantly move funds between spot and futures wallets to optimize their trading strategy.</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Feature 2 - Comprehensive Tabs -->
+        <div class="slide" data-slide="6">
+            <h2>🗂️ Feature 2: Comprehensive Tabs</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Active Positions</div>
+                    <div class="feature-description">
+                        View and manage all your currently open trades in real time. Instantly monitor P&L, margin, and risk for each position.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <div class="feature-title">Open Orders</div>
+                    <div class="feature-description">
+                        See all your pending buy and sell orders. Easily modify or cancel orders before they are filled.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📜</div>
+                    <div class="feature-title">Order History</div>
+                    <div class="feature-description">
+                        Review a complete log of all order placements, modifications, and cancellations for full transparency.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💸</div>
+                    <div class="feature-title">Transaction History</div>
+                    <div class="feature-description">
+                        Track all deposits, withdrawals, and internal transfers. Stay on top of your account funding and movements.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-title">Trade History</div>
+                    <div class="feature-description">
+                        Analyze all executed trades, including entry/exit prices, size, and realized P&L for performance review.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👛</div>
+                    <div class="feature-title">Wallet History</div>
+                    <div class="feature-description">
+                        Monitor all wallet-related activities, such as transfers between spot and futures, and fee deductions.
+                    </div>
+                </div>
+            </div>
+            <div class="explanation-box">
+                <h4>Why These Tabs Matter:</h4>
+                <p>Each tab provides a focused view of your trading and account activity, making it easy to manage, review, and optimize every aspect of your futures trading experience.</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Feature 3 - Leverage & Margin Features -->
+        <div class="slide" data-slide="7">
+            <h2>⚡ Feature 3: Leverage & Margin Features</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔢</div>
+                    <div class="feature-title">Leverage Tiers</div>
+                    <div class="feature-description">
+                        <strong>Available Leverage:</strong><br>
+                        • Tier 1: Up to 20x (New traders)<br>
+                        • Tier 2: Up to 50x (Verified)<br>
+                        • Tier 3: Up to 100x (VIP)<br>
+                        • Custom: Up to 125x (Institutional)
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <div class="feature-title">Margin Requirements</div>
+                    <div class="feature-description">
+                        <strong>Initial Margin:</strong><br>
+                        • 20x: 5% margin required<br>
+                        • 50x: 2% margin required<br>
+                        • 100x: 1% margin required<br>
+                        • 125x: 0.8% margin required
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-title">Position Limits</div>
+                    <div class="feature-description">
+                        <strong>Show:</strong><br>
+                        • Maximum position size: $50,000<br>
+                        • Current exposure: $25,000<br>
+                        • Available capacity: $25,000<br>
+                        • Diversification suggestions
+                    </div>
+                </div>
+            </div>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Leverage</th>
+                        <th>Max Position Size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>20x</strong></td>
+                        <td>$100,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>50x</strong></td>
+                        <td>$250,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>100x</strong></td>
+                        <td>$500,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>125x</strong></td>
+                        <td>$1,000,000</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="explanation-box">
+                <h4>Demo Example:</h4>
+                <p>"With $1,000 and 50x leverage, you can control a $50,000 position. But remember, higher leverage means higher risk - a 2% price move against you would liquidate your position."</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Feature 4 - Funding Events -->
+        <div class="slide" data-slide="8">
+            <h2>💰 Feature 4: Funding Events</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <div class="feature-title">Funding Rate Mechanism</div>
+                    <div class="feature-description">
+                        <strong>How It Works:</strong><br>
+                        • Every 8 hours (3 times daily)<br>
+                        • Based on price difference<br>
+                        • Longs pay shorts or vice versa<br>
+                        • Keeps price aligned with spot
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Rate Calculation</div>
+                    <div class="feature-description">
+                        <strong>Components:</strong><br>
+                        • Premium Index<br>
+                        • Interest Rate<br>
+                        • Clamp Rate<br>
+                        • Real-time updates
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-title">Trading Strategy</div>
+                    <div class="feature-description">
+                        <strong>Opportunities:</strong><br>
+                        • Funding rate arbitrage<br>
+                        • Long/short bias based on rate<br>
+                        • Rate prediction tools<br>
+                        • Historical rate analysis
+                    </div>
+                </div>
+            </div>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Event</th>
+                        <th>Impact</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>00:00 UTC</strong></td>
+                        <td>First Funding</td>
+                        <td>Rate: 0.01%</td>
+                        <td>Long pays $10 per $100k</td>
+                    </tr>
+                    <tr>
+                        <td><strong>08:00 UTC</strong></td>
+                        <td>Second Funding</td>
+                        <td>Rate: -0.01%</td>
+                        <td>Short pays $10 per $100k</td>
+                    </tr>
+                    <tr>
+                        <td><strong>16:00 UTC</strong></td>
+                        <td>Third Funding</td>
+                        <td>Rate: 0.005%</td>
+                        <td>Long pays $5 per $100k</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="explanation-box">
+                <h4>Why Funding Matters:</h4>
+                <p>Funding events are crucial for maintaining the perpetual contract price close to the underlying asset price. They occur every 8 hours, where traders either pay or receive funding based on their position and the current funding rate. This mechanism helps prevent large price deviations between the perpetual contract and the spot market.</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Feature 5 - Risk Management -->
+        <div class="slide" data-slide="9">
+            <h2>🛡️ Feature 5: Risk Management</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚠️</div>
+                    <div class="feature-title">Margin Monitor</div>
+                    <div class="feature-description">
+                        <strong>Demo:</strong><br>
+                        "Your account health: 85%"<br>
+                        • Real-time margin usage<br>
+                        • Liquidation price alerts<br>
+                        • Automatic warnings<br>
+                        • Suggested actions
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-title">Position Adjustment</div>
+                    <div class="feature-description">
+                        <strong>Save Your Position:</strong><br>
+                        • Adjust leverage dynamically<br>
+                        • Add more margin<br>
+                        • Modify liquidation price<br>
+                        • Real-time position health
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🚨</div>
+                    <div class="feature-title">Auto-Liquidation</div>
+                    <div class="feature-description">
+                        <strong>Explain:</strong><br>
+                        "If Bitcoin drops to $39,500, we'll automatically close your position to protect your remaining funds"<br>
+                        • Prevents total loss<br>
+                        • Transparent calculations
+                    </div>
+                </div>
+            </div>
+            
+            <div class="explanation-box">
+                <h4>Why This Matters:</h4>
+                <p>Think of this as a safety net. Just like a car has airbags, our platform has multiple layers of protection to prevent users from losing more money than they can afford. You can actively manage your position by adjusting leverage and adding margin to prevent liquidation.</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Feature 5 - Real-time Data -->
+        <!-- <div class="slide" data-slide="10">
+            <h2>⚡ Feature 5: Real-time Performance</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-title">Performance Chart</div>
+                    <div class="feature-description">
+                        <strong>Show:</strong><br>
+                        • 7-day portfolio performance<br>
+                        • Win/loss ratio visualization<br>
+                        • Profit trends over time<br>
+                        • Benchmark comparisons
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Quick Actions</div>
+                    <div class="feature-description">
+                        <strong>Demonstrate:</strong><br>
+                        • One-click trading buttons<br>
+                        • Favorite trading pairs<br>
+                        • Recent transaction history<br>
+                        • Market alerts setup
+                    </div>
+                </div>
+            </div>
+            
+            <div class="explanation-box">
+                <h4>Why This Matters (for non-technical team):</h4>
+                <p>Users can see everything important at a glance - their money, their trades, and their performance. It's like a bank account but for trading.</p>
+            </div>
+        </div> -->
+
+        <!-- Slide 11: Competitive Advantages -->
+        <!-- <div class="slide" data-slide="11">
+            <h2>🏆 Why We're Better Than Competitors</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th class="highlight">Our Platform</th>
+                        <th>Competitor A</th>
+                        <th>Competitor B</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Trading Fees</strong></td>
+                        <td class="highlight">0.02% / 0.04%</td>
+                        <td>0.10% / 0.15%</td>
+                        <td>0.075% / 0.125%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Maximum Leverage</strong></td>
+                        <td class="highlight">100x</td>
+                        <td>50x</td>
+                        <td>75x</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Order Execution</strong></td>
+                        <td class="highlight">&lt;1 second</td>
+                        <td>2-3 seconds</td>
+                        <td>1-2 seconds</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile App</strong></td>
+                        <td class="highlight">✅ Full featured</td>
+                        <td>❌ Basic only</td>
+                        <td>✅ Good</td>
+                    </tr>
+                    <tr>
+                        <td><strong>24/7 Support</strong></td>
+                        <td class="highlight">✅ Live chat</td>
+                        <td>❌ Email only</td>
+                        <td>✅ Limited hours</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="explanation-box">
+                <h4>Demo Talking Point:</h4>
+                <p>"While other platforms charge 0.10% per trade, we charge only 0.02%. On a $10,000 trade, that's $2 vs $10 - saving users $8 per trade!"</p>
+            </div>
+        </div> -->
+
+        <!-- Slide 12: Revenue Model -->
+        <!-- <div class="slide" data-slide="12">
+            <h2>💰 How We Make Money</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <div class="feature-title">Trading Fees</div>
+                    <div class="feature-description">
+                        <strong>Primary Revenue:</strong><br>
+                        • 0.02% on maker orders<br>
+                        • 0.04% on taker orders<br>
+                        • Volume discounts available<br>
+                        • Estimated: 70% of revenue
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-title">Funding Fees</div>
+                    <div class="feature-description">
+                        <strong>Secondary Revenue:</strong><br>
+                        • 8-hour funding payments<br>
+                        • Market-driven rates<br>
+                        • Platform takes small cut<br>
+                        • Estimated: 25% of revenue
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Premium Features</div>
+                    <div class="feature-description">
+                        <strong>Additional Revenue:</strong><br>
+                        • Advanced analytics: $50/month<br>
+                        • API access: $100/month<br>
+                        • Priority support: $25/month<br>
+                        • Estimated: 5% of revenue
+                    </div>
+                </div>
+            </div>
+            
+            <div class="explanation-box">
+                <h4>Business Model Strength:</h4>
+                <p>We make money every time someone trades. More active users = more revenue. Our low fees attract high-volume traders who generate the most revenue.</p>
+            </div>
+        </div> -->
+
+        <!-- Slide 13: Next Steps -->
+        <div class="slide" data-slide="13">
+            <h2>🎯 Next Steps & Questions</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <div class="feature-title">Immediate Actions</div>
+                    <div class="feature-description">
+                        • Gather team feedback<br>
+                        • Address concerns/questions<br>
+                        • Finalize feature priorities<br>
+                        • Set testing timeline
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    
