@@ -165,6 +165,7 @@
             position: relative;
             transition: all 0.3s ease;
             border: 3px solid rgba(255, 239, 116, 0.5);
+            cursor: pointer;
         }
 
         .flow-step:hover {
@@ -328,6 +329,29 @@
             max-width: 500px;
             margin: 0 auto;
             text-align: center;
+        }
+
+        .flow-action-btn {
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: linear-gradient(45deg, #FFEF724B, #FF8A4B);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 239, 116, 0.15);
+        }
+
+        .flow-action-btn:hover {
+            background: linear-gradient(45deg, #FF8A4B, #FFEF724B);
+            transform: scale(1.05);
+        }
+
+        .flow-step {
+            cursor: pointer;
+            position: relative;
         }
     </style>
 </head>
@@ -714,25 +738,25 @@
             <h2>🎬 Demo Flow (15 minutes)</h2>
             
             <div class="demo-flow">
-                <div class="flow-step">
+                <div class="flow-step" onclick="window.open('https://testfutures.giottus.com/futures/BTC-USDT', '_blank')">
                     <div class="step-number">1</div>
                     <div class="step-title">Market Overview</div>
                 </div>
-                <div class="flow-step">
+                <div class="flow-step" onclick="window.open('https://testfutures.giottus.com/futures/BTC-USDT', '_blank')">
                     <div class="step-number">2</div>
                     <div class="step-title">Wallet transfer</div>
                 </div>
-                <div class="flow-step">
+                <div class="flow-step" onclick="window.open('https://testfutures.giottus.com/futures/BTC-USDT', '_blank')">
                     <div class="step-number">3</div>
                     <div class="step-title">Place Order</div>
                 </div>
-                <div class="flow-step">
+                <div class="flow-step" onclick="window.open('https://testfutures.giottus.com/futures/BTC-USDT', '_blank')">
                     <div class="step-number">4</div>
-                    <div class="step-title">Manage Position</div>
+                    <div class="step-title">Show order execution</div>
                 </div>
-                <div class="flow-step">
+                <div class="flow-step" onclick="window.open('https://testfutures.giottus.com/futures/BTC-USDT', '_blank')">
                     <div class="step-number">5</div>
-                    <div class="step-title">Risk Controls</div>
+                    <div class="step-title">Position risk Controls</div>
                 </div>
             </div>
             
@@ -746,17 +770,16 @@
         <div class="slide" data-slide="13">
             <h2>🎯 Next Steps & Questions</h2>
             
-            <div class="feature-grid">
+            <div class="funding-center-card">
                 <div class="feature-card">
                     <div class="feature-icon">✅</div>
                     <div class="feature-title">Immediate Actions</div>
                     <div class="feature-description">
                         • Gather team feedback<br>
                         • Address concerns/questions<br>
-                        • Finalize feature priorities<br>
-                        • Set testing timeline
+                        
                     </div>
                 </div>
-                
-                <div class="feature-card">
+            </div>
+        </div>   
                     
